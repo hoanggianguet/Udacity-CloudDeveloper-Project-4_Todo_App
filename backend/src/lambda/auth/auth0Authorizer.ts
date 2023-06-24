@@ -77,26 +77,26 @@ function getToken(authHeader: string): string {
 
 // Ref: https://auth0.com/blog/navigating-rs256-and-jwks/
 async function getCert(headerKid: string): Promise<string> {
-  const getJwks = await Axios.get(jwksUrl, { 
-    headers: { "Accept-Encoding": "gzip,deflate,compress" } 
+  const getJwks = await Axios.get(jwksUrl, {
+    headers: { "Accept-Encoding": "gzip,deflate,compress" }
   });
 
   const signingKeys = getJwks.data.keys
     .filter(key => key.use === 'sig'
-                && key.kty === 'RSA'
-                && key.kid
-                && ((key.x5c && key.x5c.length) || (key.n && key.e))
+      && key.kty === 'RSA'
+      && key.kid
+      && ((key.x5c && key.x5c.length) || (key.n && key.e))
     ).map(key => {
       return { kid: key.kid, nbf: key.nbf, publicKey: certToPEM(key.x5c[0]) };
     });
-  
+
   // If at least a single signing key doesn't exist we have a problem... Kaboom.
   if (!signingKeys.length) {
     throw new Error('The JWKS endpoint did not contain any signing keys');
   }
-  
+
   const key = signingKeys.find(k => k.kid === headerKid);
-  
+
   return key.publicKey;
 }
 

@@ -46,19 +46,19 @@ export async function createAttachmentPresignedUrl(todoId: string, userId: strin
     logger.info("Create attachment presigned url");
 
     const dbUrl: string = `https://${process.env.ATTACHMENT_S3_BUCKET}.s3.amazonaws.com/${todoId}`;
-    const attachmentUrl:string = attachmentUtils.getSignedUrl(todoId);
+    const attachmentUrl: string = attachmentUtils.getSignedUrl(todoId);
 
     await todoAccess.updateAttachmentForTodo(todoId, userId, dbUrl);
 
     return attachmentUrl;
 }
 
-export async function getTodosDone(userId: string): Promise<any>{
+export async function getTodosDone(userId: string): Promise<any> {
     logger.info('Get list todo done');
     return await todoAccess.getTodosDone(userId);
 }
 
-export async function getTodosNotDone(userId: string): Promise<any>{
+export async function getTodosNotDone(userId: string): Promise<any> {
     logger.info('Get list todo not done');
     return await todoAccess.getTodosNotDone(userId);
 }

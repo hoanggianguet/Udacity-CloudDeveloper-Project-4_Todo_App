@@ -12,7 +12,7 @@ export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId;
     const updatedTodo: UpdateTodoRequest = JSON.parse(event.body);
-    
+
     const userId = getUserId(event);
 
     await updateTodo(todoId, userId, updatedTodo);

@@ -24,12 +24,12 @@ export class TodosAccess {
                 ':userId': userId
             }
         };
-  
+
         const result = await docClient.query(params).promise();
-  
+
         return result.Items as TodoItem[];
     }
-  
+
     async createTodo(todo: TodoItem): Promise<TodoItem> {
         logger.debug('Create new todo');
 
@@ -37,7 +37,7 @@ export class TodosAccess {
             TableName: this.todosTable,
             Item: todo
         }).promise();
-  
+
         return todo as TodoItem;
     }
 
@@ -48,7 +48,7 @@ export class TodosAccess {
             TableName: this.todosTable,
             Key: {
                 todoId: todoId,
-                userId: userId                
+                userId: userId
             },
             UpdateExpression: "set #todoName = :todoName, dueDate = :dueDate, done = :done",
             ExpressionAttributeNames: { '#todoName': "name" },
@@ -72,7 +72,7 @@ export class TodosAccess {
             TableName: this.todosTable,
             Key: {
                 todoId: todoId,
-                userId: userId                
+                userId: userId
             },
         };
 
@@ -86,7 +86,7 @@ export class TodosAccess {
             TableName: this.todosTable,
             Key: {
                 todoId: todoId,
-                userId: userId                
+                userId: userId
             },
             UpdateExpression: "set attachmentUrl = :url",
             ExpressionAttributeValues: {
@@ -102,14 +102,14 @@ export class TodosAccess {
 
     async getTodosDone(userId: string): Promise<TodoItem[]> {
         logger.debug('Getting all todos done');
-        
+
         const params = {
             TableName: this.todosTable,
             KeyConditionExpression: 'userId = :userId',
             FilterExpression: 'done = :done',
             ExpressionAttributeValues: {
                 ':userId': userId,
-                ':done' : true,
+                ':done': true,
             }
         }
 
@@ -119,14 +119,14 @@ export class TodosAccess {
 
     async getTodosNotDone(userId: string): Promise<TodoItem[]> {
         logger.debug('Getting all todos not done');
-        
+
         const params = {
             TableName: this.todosTable,
             KeyConditionExpression: 'userId = :userId',
             FilterExpression: 'done = :done',
             ExpressionAttributeValues: {
                 ':userId': userId,
-                ':done' : false,
+                ':done': false,
             }
         }
 

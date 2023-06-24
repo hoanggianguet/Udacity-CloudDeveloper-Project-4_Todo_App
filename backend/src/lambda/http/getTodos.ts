@@ -12,7 +12,7 @@ import { TodoItem } from '../../models/TodoItem'
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const userId: string = getUserId(event);
-    
+
     const todos: TodoItem[] = await getTodosForUser(userId);
 
     return {

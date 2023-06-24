@@ -10,9 +10,9 @@ import { getUserId } from '../utils'
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId: string = event.pathParameters.todoId;
-    
+
     const userId: string = getUserId(event);
-    
+
     const returnUrl: string = await createAttachmentPresignedUrl(todoId, userId);
 
     return {
